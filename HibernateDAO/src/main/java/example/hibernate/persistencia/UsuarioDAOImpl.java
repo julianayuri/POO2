@@ -17,18 +17,16 @@ public class UsuarioDAOImpl extends GenericDAOImpl<Usuario> implements UsuarioDA
 
     public Usuario buscaUsuarioPorNome(String nome) throws Exception
     {
-        UsuarioDAO usuarioDAO = new UsuarioDAOImpl();            
+        sessao = HibernateUtil.getSession();
+        transacao = sessao.beginTransaction();
         
-        List<Usuario> listar2 = usuarioDAO.listar(Usuario.class);
-           
-
-           for(Usuario printUsuario : listar2){
-               if (printUsuario.getNome().equals(nome)) {
-                   return printUsuario;
-               }
-           }
-        System.out.println("Nao achamos essa pessoa") ;  
-         
-         return null;
+        List lista = sessao.createQuery("from Usuario where nome= '" + nome + "'").list();
+        
+        sessao.flush();
+        transacao.commit();
+        sessao.close();
+        
+        if(lista.isEmpty()) return null;
+        return (Usuario)lista.get(0);
     }
 }
