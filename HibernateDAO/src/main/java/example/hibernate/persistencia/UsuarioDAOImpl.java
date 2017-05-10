@@ -26,7 +26,10 @@ public class UsuarioDAOImpl extends GenericDAOImpl<Usuario> implements UsuarioDA
         transacao.commit();
         sessao.close();
         
-        if(lista.isEmpty()) return null;
+        if(lista.isEmpty()){
+            System.out.println("Nao achamos essa pessoa");
+            return null;
+        } 
         return (Usuario)lista.get(0);
     }
 }
